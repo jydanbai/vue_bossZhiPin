@@ -15,6 +15,7 @@
  figure, figcaption, footer, header,
  menu, nav, output, ruby, section, summary,
  time, mark, audio, video, input {
+  touch-action: none;
    margin: 0;
    padding: 0;
    border: 0;
@@ -28,7 +29,10 @@
  footer, header, menu, nav, section {
    display: block;
  }
- 
+ body, button, input, option, select, td, textarea {
+  font-family: arial,verdana,helvetica,'PingFang SC','HanHei SC',STHeitiSC-Light,Microsoft Yahei,sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
  body {
    line-height: 1;
  }

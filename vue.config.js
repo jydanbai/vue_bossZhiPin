@@ -7,8 +7,17 @@ function resolve(dir) {
 }
 module.exports = {
   devServer: {
-    port: 8080,
-    open: true
+    open:true,
+    port:8081,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": ''
+        }
+      },
+    }
   },
   chainWebpack: config => {
     config.module
@@ -48,7 +57,7 @@ module.exports = {
     loaderOptions: {
       less: {
         modifyVars: {
-          hack: `true; @import "src/assets/style/theme/my-theme.less";`
+          hack: `true; @import "${resolve("src/assets/style/theme/my-theme.less")}";`
         }
       }
     }
