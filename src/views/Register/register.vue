@@ -50,21 +50,14 @@
 </template>
 
 <script>
-import {
-  Form,
-  Field,
-  RadioGroup,
-  Radio,
-  Checkbox,
-  CheckboxGroup,
-} from "vant";
+import { Form, Field, RadioGroup, Radio, Checkbox, CheckboxGroup } from "vant";
 export default {
   components: {
     [Form.name]: Form,
     [Field.name]: Field,
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
-    [Checkbox.name]: Checkbox,
+    [Checkbox.name]: Checkbox
   },
   data() {
     return {
@@ -84,20 +77,24 @@ export default {
     toLogin() {
       this.$router.replace("/login");
     },
-    isConfirmPwd(){
+    isConfirmPwd() {
       return this.password === this.confirmPwd ? true : false;
     },
     async onSubmit() {
-      let {username,password,type} = this
+      let { username, password, type } = this;
       if (!this.agreement) {
         this.$toast("请阅读并同意BOSS直聘用户协议，方可注册");
         return false;
-      }else{
-        let result
-        result = await this.$API.registerWithPassword(username,password,type)
-        console.log(result);
+      } else {
+        let result;
+        result = await this.$API.registerWithPassword(username, password, type);
+        if (result.code === 1) {
+          this.$store.dispatch('saveErrorMsg',{errMsg:result.msg})
+          this.$toast(result.msg);
+        }else if(result.code === 0){
+          this.$store.dispatch('saveUser',{userInfo:result.data,$router:this.$router})
+        }
       }
-
     }
   }
 };

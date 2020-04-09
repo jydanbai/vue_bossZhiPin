@@ -30,7 +30,8 @@
               <van-button round block type="info" native-type="submit">提交</van-button>
             </div>
             <div class="text-tip">
-              没有账号？<a href="javascript:;" class="link-signup" @click="toRegister">立即注册</a>
+              没有账号？
+              <a href="javascript:;" class="link-signup" @click="toRegister">立即注册</a>
             </div>
           </van-form>
         </van-tab>
@@ -50,19 +51,27 @@ export default {
       password: ""
     };
   },
-  methods: {
-    onSubmit(values) {
-      console.log("submit", values);
-    },
-    toRegister(){
-      this.$router.replace('/register')
-    }
-  },
   components: {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     [Form.name]: Form,
     [Field.name]: Field
+  },
+  methods: {
+    async onSubmit(values) {
+      let { username, password } = this;
+      let result;
+      result = await this.$API.loginWithPassword(username, password);
+      if (result.code === 1) {
+        this.$store.dispatch("saveErrorMsg", { errMsg: result.msg });
+        this.$toast(result.msg);
+      } else if (result.code === 0) {
+        this.$store.dispatch("saveUser", { userInfo: result.data,$router:this.$router});
+      }
+    },
+    toRegister() {
+      this.$router.replace("/register");
+    }
   }
 };
 </script>
@@ -90,26 +99,26 @@ export default {
           font-size: 14px;
         }
       }
-      .van-tabs__content{
-        .van-tab__pane{
-          .van-form{
-            .van-cell{
+      .van-tabs__content {
+        .van-tab__pane {
+          .van-form {
+            .van-cell {
               margin: 20px 0;
             }
-            .sub-btn{
-              .van-button{
+            .sub-btn {
+              .van-button {
                 background-color: #5dd5c8;
                 border: none;
                 border-radius: 0;
               }
             }
-            .text-tip{
+            .text-tip {
               padding-top: 24px;
               color: #9fa3b0;
               text-align: center;
               overflow: hidden;
               font-size: 14px;
-              .link-signup{
+              .link-signup {
                 color: #18c3b1;
               }
             }

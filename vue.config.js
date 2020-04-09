@@ -45,7 +45,7 @@ module.exports = {
   configureWebpack: {
     // 当前配置需要写入该选项中
     resolve: {
-      extensions: [".js", ".vue", ".json"],
+      extensions: [".js", ".vue", ".json",".ts"],
       alias: {
         vue$: "vue/dist/vue.esm.js",
         "@": resolve("src"), // 设置文件查找路径，可简写文件查找路径

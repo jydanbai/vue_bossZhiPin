@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="loadWrap">
     <van-loading type="spinner" color="#1989fa" />
   </div>
 </template>
@@ -13,5 +13,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+.loadWrap{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% 0 0 -50%);
+}
 </style>

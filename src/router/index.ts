@@ -11,6 +11,8 @@ import Message from '../views/Message/message.vue'
 import Personal from '../views/Personal/personal.vue'
 import Register from '../views/Register/register.vue'
 import Login from '../views/Login/login.vue'
+import dasheInfo from '../views/DashenInfo/dashen-info.vue'
+import laobanInfo from '../views/LaobanInfo/laoban-info.vue'
 
 import NotFound from '../components/NotFound/NotFound.vue';
 
@@ -57,6 +59,20 @@ const router =  new VueRouter({
     {
       path: '/register',
       component: Register,
+      meta: {
+        showFooter: false
+      },
+    },
+    {
+      path: '/laobaninfo',
+      component: laobanInfo,
+      meta: {
+        showFooter: false
+      },
+    },
+    {
+      path: '/dasheninfo',
+      component: dasheInfo,
       meta: {
         showFooter: false
       },
