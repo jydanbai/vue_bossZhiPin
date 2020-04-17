@@ -51,6 +51,7 @@
 
 <script>
 import { Form, Field, RadioGroup, Radio, Checkbox, CheckboxGroup } from "vant";
+import { getRedirectTo } from "@/utils/index";
 export default {
   components: {
     [Form.name]: Form,
@@ -89,10 +90,14 @@ export default {
         let result;
         result = await this.$API.registerWithPassword(username, password, type);
         if (result.code === 1) {
-          this.$store.dispatch('saveErrorMsg',{errMsg:result.msg})
+          this.$store.dispatch("saveErrorMsg", { errMsg: result.msg });
           this.$toast(result.msg);
-        }else if(result.code === 0){
-          this.$store.dispatch('saveUser',{userInfo:result.data,$router:this.$router})
+        } else if (result.code === 0) {
+          this.$store.dispatch("saveUser", {
+            userInfo: result.data,
+          });
+          const { type, header } = this.$store.state.userInfo;
+          this.$router.replace(getRedirectTo(type, header));
         }
       }
     }

@@ -36,6 +36,7 @@
 import BScroll from "better-scroll";
 import { Field, Form, Toast } from "vant";
 import ChatHeads from "@/components/ChatHeads/ChatHeads";
+import { getRedirectTo } from "@/utils/index";
 export default {
   components: {
     [Field.name]: Field,
@@ -89,13 +90,29 @@ export default {
     //保存
     async onSave() {
       let { header, info, post, company, salary } = this;
-      if (!this.post || !this.company || !this.salary) {
+      if (!this.post || !this.company || !this.salary || !this.header) {
         Toast("请填写完整信息!");
         return false;
       } else {
         let result;
-        result = await this.$API.reqUpdateUser({header, info, post, company, salary});
+        result = await this.$API.reqUpdateUser({
+          header,
+          info,
+          post,
+          company,
+          salary
+        });
         console.log(result);
+        if (result.code === 1) {
+          this.$store.dispatch("saveResetMsg", { resetMsg: result.msg });
+          this.$toast(result.msg);
+        } else if (result.code === 0) {
+          this.$store.dispatch("updateUserInfo", {
+            user: result.data,
+          });
+          const { type, header } = this.$store.state.userInfo;
+          this.$router.replace(getRedirectTo(type, header));
+        }
       }
     },
     //头像选择

@@ -24,3 +24,7 @@ export const reqUpdateUser = (user: Object) => ajax({
   url: "/update",
   data: user
 })
+
+export const reqUser = () => ajax({
+  url: "/user",
+})

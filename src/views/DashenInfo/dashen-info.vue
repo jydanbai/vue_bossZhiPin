@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
     <van-nav-bar title="大神信息完善" />
-    <ChatHeads @selectHeader="selectImg($event)"/>
+    <ChatHeads @selectHeader="selectImg($event)" />
     <van-field
       v-model="post"
       label="求职岗位："
@@ -19,6 +19,7 @@
 <script>
 import { Field, Toast } from "vant";
 import ChatHeads from "@/components/ChatHeads/ChatHeads";
+import { getRedirectTo } from "@/utils/index";
 export default {
   components: {
     [Field.name]: Field,
@@ -45,19 +46,28 @@ export default {
     //保存
     async onSave() {
       let { header, info, post } = this;
-      if(!this.post){
-        Toast("请填写完整信息!")
-        return false
-      }else{
+      if (!this.post || !this.header) {
+        Toast("请填写完整信息!");
+        return false;
+      } else {
         let result;
-        result = await this.$API.reqUpdateUser({header, info, post});
+        result = await this.$API.reqUpdateUser({ header, info, post });
         console.log(result);
-
+        if (result.code === 1) {
+          this.$store.dispatch("saveResetMsg", { resetMsg: result.msg });
+          this.$toast(result.msg);
+        } else if (result.code === 0) {
+          this.$store.dispatch("updateUserInfo", {
+            user: result.data,
+          });
+          const { type, header } = this.$store.state.userInfo;
+          this.$router.replace(getRedirectTo(type, header));
+        }
       }
     },
     //头像选择
-    selectImg(img){
-      this.header = img
+    selectImg(img) {
+      this.header = img;
     }
   }
 };

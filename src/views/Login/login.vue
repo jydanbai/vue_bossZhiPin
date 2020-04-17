@@ -43,6 +43,7 @@
 
 <script>
 import { Tab, Tabs, Form, Field } from "vant";
+import { getRedirectTo } from "@/utils/index";
 export default {
   data() {
     return {
@@ -66,7 +67,11 @@ export default {
         this.$store.dispatch("saveErrorMsg", { errMsg: result.msg });
         this.$toast(result.msg);
       } else if (result.code === 0) {
-        this.$store.dispatch("saveUser", { userInfo: result.data,$router:this.$router});
+        this.$store.dispatch("saveUser", {
+          userInfo: result.data,
+        });
+        const { type, header } = this.$store.state.userInfo;
+        this.$router.replace(getRedirectTo(type, header));
       }
     },
     toRegister() {
